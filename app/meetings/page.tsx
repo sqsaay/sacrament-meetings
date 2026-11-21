@@ -16,13 +16,16 @@ export default async function MeetingsPage() {
   const meetings: SacramentMeeting[] = await response.json();
 
   return (
-    <main className="space-y-6">
-      <header>
-        <h1 className="text-3xl font-bold">Sacrament meetings</h1>
-        <p>Browse agendas for all scheduled meetings.</p>
+    <main className="meetings-index">
+      <header className="meetings-index-hero">
+        <div>
+          <p className="agenda-eyebrow">Fatima Ward · Weekly worship</p>
+          <h1>Sacrament meetings</h1>
+          <p>Gather, worship, and follow along with each week’s program.</p>
+        </div>
       </header>
       {meetings.length > 0 ? (
-        <ul className="grid gap-4 md:grid-cols-2">
+        <ul className="meeting-card-grid">
           {meetings.map((meeting) => (
             <li key={meeting.id}>
               <MeetingCard meeting={meeting} />
@@ -30,7 +33,7 @@ export default async function MeetingsPage() {
           ))}
         </ul>
       ) : (
-        <p>No meetings are scheduled.</p>
+        <p className="meetings-empty-state">No meetings are scheduled.</p>
       )}
     </main>
   );

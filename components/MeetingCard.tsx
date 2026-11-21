@@ -12,20 +12,18 @@ export default function MeetingCard({ meeting }: MeetingCardProps) {
   return (
     <Link
       href={`/meetings/${meeting.id}`}
-      className="block rounded-lg border border-white/30 bg-white/10 p-4 transition-colors hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+      className="meeting-card"
     >
-      <article>
-        <h2 className="text-xl font-semibold">{date}</h2>
-        <p className="mt-1 capitalize">{meeting.meetingType} meeting</p>
-        <dl className="mt-4 grid gap-2 text-sm sm:grid-cols-2">
-          <div>
-            <dt className="font-semibold">Presiding</dt>
-            <dd>{meeting.presiding}</dd>
-          </div>
-          <div>
-            <dt className="font-semibold">Conducting</dt>
-            <dd>{meeting.conducting}</dd>
-          </div>
+      <article className="meeting-card-content">
+        <div className="meeting-card-topline">
+          <span className="meeting-type-pill">{meeting.meetingType}</span>
+          <span className="meeting-card-arrow" aria-hidden="true">↗</span>
+        </div>
+        <h2>{date}</h2>
+        <p className="meeting-card-caption">Sacrament meeting</p>
+        <dl className="meeting-card-details">
+          <div><dt>Presiding</dt><dd>{meeting.presiding}</dd></div>
+          <div><dt>Conducting</dt><dd>{meeting.conducting}</dd></div>
         </dl>
       </article>
     </Link>
