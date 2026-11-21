@@ -208,6 +208,82 @@ body {
   list-style: none;
 }
 
+.meeting-search {
+  display: grid;
+  max-width: 560px;
+  gap: 0.45rem;
+  margin-top: 1.5rem;
+}
+
+.meeting-search label {
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.meeting-search input {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid #d6ccbe;
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--foreground);
+  font: inherit;
+  padding: 0.75rem 1rem;
+}
+
+.meeting-search input:focus-visible {
+  border-color: var(--accent);
+  outline: 3px solid rgb(189 77 33 / 20%);
+  outline-offset: 2px;
+}
+
+.meetings-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.pagination-link,
+.pagination-status {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  padding: 0.65rem 0.9rem;
+}
+
+.pagination-link {
+  border: 1px solid #d6ccbe;
+  background: var(--card);
+  color: var(--foreground);
+  text-decoration: none;
+}
+
+.pagination-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.pagination-link:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.pagination-link-disabled {
+  color: #9a9388;
+  background: #f1ede6;
+  cursor: default;
+}
+
+.pagination-status {
+  color: var(--muted-foreground);
+}
+
 .meeting-card {
   display: block;
   height: 100%;

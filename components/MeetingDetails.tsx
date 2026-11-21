@@ -125,7 +125,7 @@ export default function MeetingDetails({ meeting }: MeetingDetailsProps) {
           <div className="agenda-section-heading">
             <div>
               <p className="agenda-eyebrow">Order of service</p>
-              <h2>Today’s agenda</h2>
+              <h2>Today&apos;s agenda</h2>
             </div>
             <span className="agenda-item-count">{agendaItems.length} parts</span>
           </div>

@@ -8,7 +8,7 @@ async function CurrentMeetingRedirect(): Promise<never> {
   await connection();
 
   const sundayDate = getCurrentSundayDate(new Date());
-  const [meeting] = getMeetings(sundayDate);
+  const [meeting] = await getMeetings(sundayDate);
 
   if (!meeting) {
     redirect('/meetings');
