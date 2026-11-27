@@ -10,7 +10,7 @@ export default function Home() {
             Fatima Ward
           </p>
           <h1 className="text-4xl font-bold leading-tight sm:text-5xl">
-            Sacrament meetings, thoughtfully planned.
+            Sacrament meetings
           </h1>
           <p className="max-w-xl text-lg">
             Browse meeting agendas and review the hymns, prayers, speakers, and
