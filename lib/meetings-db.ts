@@ -134,20 +134,133 @@ export async function getMeetingById(
 export async function addMeeting(
   data: Omit<SacramentMeeting, 'id'>,
 ): Promise<SacramentMeeting> {
-  void data;
-  throw new Error('addMeeting: database implementation coming in Week 04');
+  const rows = await sql`
+    INSERT INTO meetings (
+      date,
+      meeting_type,
+      presiding,
+      conducting,
+      announcements,
+      opening_hymn,
+      opening_prayer,
+      ward_business,
+      stake_business,
+      sacrament_hymn,
+      speakers,
+      closing_hymn,
+      closing_prayer
+    )
+    VALUES (
+      ${data.date}::date,
+      ${data.meetingType},
+      ${data.presiding},
+      ${data.conducting},
+      CASE
+        WHEN ${data.announcements === undefined} THEN NULL
+        ELSE ARRAY(
+          SELECT jsonb_array_elements_text(${JSON.stringify(data.announcements ?? [])}::jsonb)
+        )
+      END,
+      ${JSON.stringify(data.openingHymn)}::jsonb,
+      ${data.openingPrayer},
+      ${JSON.stringify(data.wardBusiness)}::jsonb,
+      ${data.stakeBusiness},
+      ${JSON.stringify(data.sacramentHymn)}::jsonb,
+      ${JSON.stringify(data.speakers)}::jsonb,
+      ${JSON.stringify(data.closingHymn)}::jsonb,
+      ${data.closingPrayer}
+    )
+    RETURNING
+      id,
+      to_char(date, 'YYYY-MM-DD') AS "date",
+      meeting_type AS "meetingType",
+      presiding,
+      conducting,
+      announcements,
+      opening_hymn AS "openingHymn",
+      opening_prayer AS "openingPrayer",
+      ward_business AS "wardBusiness",
+      stake_business AS "stakeBusiness",
+      sacrament_hymn AS "sacramentHymn",
+      speakers,
+      closing_hymn AS "closingHymn",
+      closing_prayer AS "closingPrayer"
+  `;
+
+  if (!rows[0]) {
+    throw new Error('Failed to create meeting.');
+  }
+
+  return rows[0] as unknown as SacramentMeeting;
 }
 
 export async function updateMeeting(
   id: number,
-  updates: Partial<SacramentMeeting>,
+  updates: Partial<Omit<SacramentMeeting, 'id'>>,
 ): Promise<SacramentMeeting | null> {
-  void id;
-  void updates;
-  throw new Error('updateMeeting: database implementation coming in Week 04');
+  const rows = await sql`
+    UPDATE meetings
+    SET
+      date = COALESCE(${updates.date ?? null}::date, date),
+      meeting_type = COALESCE(${updates.meetingType ?? null}, meeting_type),
+      presiding = COALESCE(${updates.presiding ?? null}, presiding),
+      conducting = COALESCE(${updates.conducting ?? null}, conducting),
+      announcements = CASE
+        WHEN ${updates.announcements === undefined} THEN announcements
+        ELSE ARRAY(
+          SELECT jsonb_array_elements_text(${JSON.stringify(updates.announcements ?? [])}::jsonb)
+        )
+      END,
+      opening_hymn = COALESCE(
+        ${updates.openingHymn === undefined ? null : JSON.stringify(updates.openingHymn)}::jsonb,
+        opening_hymn
+      ),
+      opening_prayer = COALESCE(${updates.openingPrayer ?? null}, opening_prayer),
+      ward_business = COALESCE(
+        ${updates.wardBusiness === undefined ? null : JSON.stringify(updates.wardBusiness)}::jsonb,
+        ward_business
+      ),
+      stake_business = COALESCE(${updates.stakeBusiness ?? null}, stake_business),
+      sacrament_hymn = COALESCE(
+        ${updates.sacramentHymn === undefined ? null : JSON.stringify(updates.sacramentHymn)}::jsonb,
+        sacrament_hymn
+      ),
+      speakers = COALESCE(
+        ${updates.speakers === undefined ? null : JSON.stringify(updates.speakers)}::jsonb,
+        speakers
+      ),
+      closing_hymn = COALESCE(
+        ${updates.closingHymn === undefined ? null : JSON.stringify(updates.closingHymn)}::jsonb,
+        closing_hymn
+      ),
+      closing_prayer = COALESCE(${updates.closingPrayer ?? null}, closing_prayer)
+    WHERE id = ${id}
+    RETURNING
+      id,
+      to_char(date, 'YYYY-MM-DD') AS "date",
+      meeting_type AS "meetingType",
+      presiding,
+      conducting,
+      announcements,
+      opening_hymn AS "openingHymn",
+      opening_prayer AS "openingPrayer",
+      ward_business AS "wardBusiness",
+      stake_business AS "stakeBusiness",
+      sacrament_hymn AS "sacramentHymn",
+      speakers,
+      closing_hymn AS "closingHymn",
+      closing_prayer AS "closingPrayer"
+  `;
+
+  return (rows[0] as unknown as SacramentMeeting) ?? null;
 }
 
 export async function deleteMeeting(id: number): Promise<boolean> {
-  void id;
-  throw new Error('deleteMeeting: database implementation coming in Week 04');
+  const rows = await sql`
+    DELETE FROM meetings
+    WHERE id = ${id}
+    RETURNING id
+  `;
+
+  return rows.length > 0;
 }
